@@ -41,6 +41,10 @@ describe("App routing", () => {
     );
   });
 
+  it.each(["/courses", "/assignments"])("puts %s behind the gate", (path) => {
+    expect(matchPath(path).map((m) => m.routeId)).toContain("/_authenticated");
+  });
+
   it("does not put the login page behind the gate", () => {
     const routeIds = matchPath("/auth").map((m) => m.routeId);
 
