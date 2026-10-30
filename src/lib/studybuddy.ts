@@ -67,7 +67,7 @@ export function validateAssignment(form: AssignmentForm): string | null {
 }
 
 export function formatDate(date: string): string {
-  const [y, m, d] = date.split("-").map(Number);
+  const [y = 0, m = 1, d = 1] = date.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString(undefined, {
     weekday: "short",
     month: "short",
