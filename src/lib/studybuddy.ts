@@ -132,11 +132,14 @@ export function friendlyError(err: unknown): string {
 }
 
 // Checks the form before contacting the auth server. Returns an error or null.
-export function validateCredentials(email: string, password: string, mode: "signin" | "register"): string | null {
+export function validateCredentials(
+  email: string,
+  password: string,
+  mode: "signin" | "register",
+): string | null {
   if (!email.trim()) return "Email is required.";
   if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Please enter a valid email address.";
   if (!password) return "Password is required.";
   if (mode === "register" && password.length < 6) return "Password must be at least 6 characters.";
   return null;
 }
-
