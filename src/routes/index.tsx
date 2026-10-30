@@ -5,9 +5,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "StudyBuddy" },
-      { name: "description", content: "StudyBuddy — a simple study companion proof of concept." },
+      { name: "description", content: "StudyBuddy — manage your courses, assignments and deadlines." },
       { property: "og:title", content: "StudyBuddy" },
-      { property: "og:description", content: "StudyBuddy — a simple study companion proof of concept." },
+      { property: "og:description", content: "StudyBuddy — manage your courses, assignments and deadlines." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -30,7 +30,7 @@ function Index() {
           to="/auth"
           className="mt-6 inline-block w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
-          Sign in
+          Sign in or register
         </Link>
       </div>
     </div>
