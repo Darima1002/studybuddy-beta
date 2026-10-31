@@ -1,4 +1,4 @@
-# StudyBuddy (Team CodeNova)
+# StudyBuddy
 
 StudyBuddy is a student course, assignment and deadline manager. This is the
 **Beta 1 (v0.1.0-beta.1)** release prepared for the capstone code walkthrough.
