@@ -45,6 +45,28 @@ const dueTodayCount = upcoming.filter(
         assignments due today or later, earliest first.
       </p>
 
+{!isLoading && !error && (
+  <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="rounded-xl border bg-card p-5">
+      <p className="text-sm text-muted-foreground">
+        Upcoming assignments
+      </p>
+      <p className="mt-2 text-3xl font-bold text-card-foreground">
+        {upcomingCount}
+      </p>
+    </div>
+
+    <div className="rounded-xl border bg-card p-5">
+      <p className="text-sm text-muted-foreground">
+        Due today
+      </p>
+      <p className="mt-2 text-3xl font-bold text-card-foreground">
+        {dueTodayCount}
+      </p>
+    </div>
+  </div>
+)}
+
       {isLoading && <p className="text-sm text-muted-foreground">Loading deadlines…</p>}
       {error && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
