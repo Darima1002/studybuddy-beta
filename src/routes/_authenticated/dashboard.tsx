@@ -30,7 +30,13 @@ function Dashboard() {
     queryKey: ["assignments"],
     queryFn: fetchAssignments,
   });
-  const upcoming = upcomingAssignments(data ?? [], todayString());
+  const today = todayString();
+const upcoming = upcomingAssignments(data ?? [], today);
+
+const upcomingCount = upcoming.length;
+const dueTodayCount = upcoming.filter(
+  (assignment) => assignment.due_date === today
+).length;
 
   return (
     <AppShell email={user.email} title="Upcoming deadlines">
