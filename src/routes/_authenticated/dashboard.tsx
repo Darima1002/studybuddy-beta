@@ -111,6 +111,63 @@ const completionPercentage =
     </p>
   </div>
 )}
+      {!isLoading && !error && (
+  <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+
+    {/* Overdue Assignments */}
+    <div className="rounded-xl border bg-card p-5">
+      <h2 className="mb-4 text-lg font-semibold text-red-600">
+        Overdue Assignments
+      </h2>
+
+      {(data ?? [])
+        .filter(
+          (a) =>
+            a.due_date < today &&
+            a.status !== "completed"
+        )
+        .map((a) => (
+          <div key={a.id} className="mb-3 border-b pb-3">
+            <p className="font-medium">{a.title}</p>
+            <p className="text-sm text-muted-foreground">
+              {a.courses?.name} — {formatDate(a.due_date)}
+            </p>
+          </div>
+        ))}
+
+      {overdueCount === 0 && (
+        <p className="text-sm text-muted-foreground">
+          No overdue assignments!
+        </p>
+      )}
+    </div>
+
+    {/* Completed Assignments */}
+    <div className="rounded-xl border bg-card p-5">
+      <h2 className="mb-4 text-lg font-semibold text-green-600">
+        Completed Assignments
+      </h2>
+
+      {(data ?? [])
+        .filter((a) => a.status === "completed")
+        .map((a) => (
+          <div key={a.id} className="mb-3 border-b pb-3">
+            <p className="font-medium">{a.title}</p>
+            <p className="text-sm text-muted-foreground">
+              {a.courses?.name} — {formatDate(a.due_date)}
+            </p>
+          </div>
+        ))}
+
+      {completedAssignments === 0 && (
+        <p className="text-sm text-muted-foreground">
+          No completed assignments yet.
+        </p>
+      )}
+    </div>
+
+  </div>
+)}
       {isLoading && <p className="text-sm text-muted-foreground">Loading deadlines…</p>}
       {error && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
