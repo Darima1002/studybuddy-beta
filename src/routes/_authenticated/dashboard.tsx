@@ -37,7 +37,11 @@ const upcomingCount = upcoming.length;
 const dueTodayCount = upcoming.filter(
   (assignment) => assignment.due_date === today
 ).length;
-
+const overdueCount = (data ?? []).filter(
+  (assignment) =>
+    assignment.due_date < today &&
+    assignment.status !== "completed"
+).length;
   return (
     <AppShell email={user.email} title="Upcoming deadlines">
       <p className="mb-4 text-sm text-muted-foreground">
@@ -46,7 +50,7 @@ const dueTodayCount = upcoming.filter(
       </p>
 
 {!isLoading && !error && (
-  <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
     <div className="rounded-xl border bg-card p-5">
       <p className="text-sm text-muted-foreground">
         Upcoming assignments
@@ -64,6 +68,14 @@ const dueTodayCount = upcoming.filter(
         {dueTodayCount}
       </p>
     </div>
+    <div className="rounded-xl border bg-card p-5">
+  <p className="text-sm text-muted-foreground">
+    Overdue assignments
+  </p>
+  <p className="mt-2 text-3xl font-bold text-red-600">
+    {overdueCount}
+  </p>
+</div>
   </div>
 )}
 
