@@ -42,6 +42,16 @@ const overdueCount = (data ?? []).filter(
     assignment.due_date < today &&
     assignment.status !== "completed"
 ).length;
+  const totalAssignments = (data ?? []).length;
+
+const completedAssignments = (data ?? []).filter(
+  (assignment) => assignment.status === "completed"
+).length;
+
+const completionPercentage =
+  totalAssignments > 0
+    ? Math.round((completedAssignments / totalAssignments) * 100)
+    : 0;
   return (
     <AppShell email={user.email} title="Upcoming deadlines">
       <p className="mb-4 text-sm text-muted-foreground">
@@ -78,7 +88,29 @@ const overdueCount = (data ?? []).filter(
 </div>
   </div>
 )}
+{!isLoading && !error && (
+  <div className="mb-6 rounded-xl border bg-card p-5">
+    <div className="mb-3 flex items-center justify-between">
+      <h2 className="text-lg font-semibold text-card-foreground">
+        Assignment Progress
+      </h2>
+      <span className="font-bold text-green-600">
+        {completionPercentage}%
+      </span>
+    </div>
 
+    <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
+      <div
+        className="h-full rounded-full bg-green-600 transition-all duration-300"
+        style={{ width: `${completionPercentage}%` }}
+      />
+    </div>
+
+    <p className="mt-3 text-sm text-muted-foreground">
+      {completedAssignments} of {totalAssignments} assignments completed
+    </p>
+  </div>
+)}
       {isLoading && <p className="text-sm text-muted-foreground">Loading deadlines…</p>}
       {error && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
