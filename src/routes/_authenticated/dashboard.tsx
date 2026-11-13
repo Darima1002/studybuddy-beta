@@ -168,6 +168,23 @@ const completionPercentage =
 
   </div>
 )}
+      
+<div className="mb-6 flex flex-wrap gap-3">
+  <Link
+    to="/courses"
+    className="rounded-lg border bg-card px-5 py-3 text-sm font-semibold hover:bg-muted"
+  >
+    Manage Courses
+  </Link>
+
+  <Link
+    to="/assignments"
+    className="rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+  >
+    + Add / Manage Assignments
+  </Link>
+</div>
+
       {isLoading && <p className="text-sm text-muted-foreground">Loading deadlines…</p>}
       {error && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -210,20 +227,6 @@ const completionPercentage =
         </ul>
       )}
 
-      <div className="mt-6 flex gap-3">
-        <Link
-          to="/courses"
-          className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-accent"
-        >
-          Manage courses
-        </Link>
-        <Link
-          to="/assignments"
-          className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-accent"
-        >
-          Manage assignments
-        </Link>
-      </div>
     </AppShell>
   );
 }
