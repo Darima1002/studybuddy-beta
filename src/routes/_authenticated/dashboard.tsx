@@ -53,11 +53,10 @@ const completionPercentage =
     ? Math.round((completedAssignments / totalAssignments) * 100)
     : 0;
   return (
-    <AppShell email={user.email} title="Upcoming deadlines">
+    <AppShell email={user.email} title="My Dashboard">
       <p className="mb-4 text-sm text-muted-foreground">
-        Signed in as <span className="font-medium text-foreground">{user.email}</span>. Unfinished
-        assignments due today or later, earliest first.
-      </p>
+  Stay on top of your assignments and deadlines.
+</p>
 
 {!isLoading && !error && (
   <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
