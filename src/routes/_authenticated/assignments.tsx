@@ -68,6 +68,7 @@ function AssignmentsPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (busy || !coursesQuery.isSuccess) return;
     const problem = validateAssignment(form);
     if (problem) return setMessage({ kind: "error", text: problem });
     const ok = await run(
@@ -81,6 +82,7 @@ function AssignmentsPage() {
   }
 
   function startEdit(a: Assignment) {
+    if (busy) return;
     setEditingId(a.id);
     setForm({ title: a.title, course_id: a.course_id, due_date: a.due_date, status: a.status });
     setMessage(null);
@@ -88,35 +90,15 @@ function AssignmentsPage() {
   }
 
   async function handleDelete(a: Assignment) {
+    if (busy) return;
     if (window.confirm(`Delete the assignment "${a.title}"? This cannot be undone.`)) {
-      await run(() => deleteAssignment(a.id), `Assignment "${a.title}" deleted.`);
-      if (editingId === a.id) {
+      const ok = await run(() => deleteAssignment(a.id), `Assignment "${a.title}" deleted.`);
+      if (ok && editingId === a.id) {
         setEditingId(null);
-        setForm(emptyForm);
-      }
-    }
-  }
-
-  const courses = coursesQuery.data ?? [];
-  const assignments = assignmentsQuery.data ?? [];
-  const noCourses = coursesQuery.isSuccess && courses.length === 0;
-
-  return (
-    <AppShell email={user.email} title="Assignments">
-      {noCourses ? (
-        <p className="mb-6 rounded-xl border bg-card p-4 text-sm text-muted-foreground">
-          You need a course before adding assignments.{" "}
-          <Link to="/courses" className="text-primary underline">
-            Add a course
-          </Link>
-          .
-        </p>
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          className="mb-6 grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
-        >
+        setForm(emptyForm)
+        
+    
+  
           <h2 className="font-semibold text-card-foreground sm:col-span-2">
             {editingId ? "Edit assignment" : "Add assignment"}
           </h2>
@@ -125,6 +107,7 @@ function AssignmentsPage() {
               Title *
             </label>
             <input
+              disabled={busy}
               id="title"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -136,6 +119,7 @@ function AssignmentsPage() {
               Course *
             </label>
             <select
+              disabled={busy}
               id="course"
               value={form.course_id}
               onChange={(e) => setForm({ ...form, course_id: e.target.value })}
@@ -154,6 +138,7 @@ function AssignmentsPage() {
               Due date *
             </label>
             <input
+              disabled={busy}
               id="due"
               type="date"
               value={form.due_date}
@@ -166,6 +151,7 @@ function AssignmentsPage() {
               Status *
             </label>
             <select
+              disabled={busy}
               id="status"
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value as Status })}
@@ -184,6 +170,7 @@ function AssignmentsPage() {
             </button>
             {editingId && (
               <button
+                disabled={busy}
                 type="button"
                 className={secondaryButton}
                 onClick={() => {
@@ -238,14 +225,15 @@ function AssignmentsPage() {
                 <span className="ml-2 font-medium text-destructive">Overdue</span>
               )}
             </span>
+                        </span>
             <StatusBadge status={a.status} label={STATUS_LABELS[a.status]} />
-            <button className={secondaryButton} onClick={() => startEdit(a)}>
+            <button disabled={busy} className={secondaryButton} onClick={() => startEdit(a)}>
               Edit
             </button>
             <button disabled={busy} className={dangerButton} onClick={() => handleDelete(a)}>
               Delete
             </button>
-          </li>
+                  </li>
         ))}
       </ul>
     </AppShell>
