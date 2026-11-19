@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { createFileRoute, getRouteApi, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -96,10 +95,40 @@ function AssignmentsPage() {
       const ok = await run(() => deleteAssignment(a.id), `Assignment "${a.title}" deleted.`);
       if (ok && editingId === a.id) {
         setEditingId(null);
-        setForm(emptyForm)
-        
-    
-  
+        setForm(emptyForm);
+      }
+    }
+  }
+
+  const courses = coursesQuery.data ?? [];
+  const assignments = assignmentsQuery.data ?? [];
+  const noCourses = coursesQuery.isSuccess && courses.length === 0;
+
+  return (
+    <AppShell email={user.email} title="Assignments">
+      {coursesQuery.isLoading && (
+        <p className="mb-6 text-sm text-muted-foreground">Loading courses…</p>
+      )}
+      {coursesQuery.error && (
+        <p className="mb-6 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {friendlyError(coursesQuery.error)}
+        </p>
+      )}
+      {noCourses && (
+        <p className="mb-6 rounded-xl border bg-card p-4 text-sm text-muted-foreground">
+          You need a course before adding assignments.{" "}
+          <Link to="/courses" className="text-primary underline">
+            Add a course
+          </Link>
+          .
+        </p>
+      )}
+      {coursesQuery.isSuccess && !noCourses && (
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          className="mb-6 grid gap-3 rounded-xl border bg-card p-4 sm:grid-cols-2"
+        >
           <h2 className="font-semibold text-card-foreground sm:col-span-2">
             {editingId ? "Edit assignment" : "Add assignment"}
           </h2>
@@ -226,7 +255,6 @@ function AssignmentsPage() {
                 <span className="ml-2 font-medium text-destructive">Overdue</span>
               )}
             </span>
-                        </span>
             <StatusBadge status={a.status} label={STATUS_LABELS[a.status]} />
             <button disabled={busy} className={secondaryButton} onClick={() => startEdit(a)}>
               Edit
@@ -234,7 +262,7 @@ function AssignmentsPage() {
             <button disabled={busy} className={dangerButton} onClick={() => handleDelete(a)}>
               Delete
             </button>
-                  </li>
+          </li>
         ))}
       </ul>
     </AppShell>
