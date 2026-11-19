@@ -49,7 +49,7 @@ function passwordStrength(password: string): { score: number; label: string } {
   if (/\d/.test(password)) score++;
   if (/[^A-Za-z0-9]/.test(password)) score++;
   const labels = ["Too weak", "Weak", "Okay", "Good", "Strong"];
-  return { score, label: password ? labels[score] : "" };
+  return { score, label: password ? (labels[score] ?? "") : "" };
 }
 
 function GoogleIcon() {
