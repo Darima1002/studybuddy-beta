@@ -24,6 +24,10 @@ export const Route = createFileRoute("/_authenticated/courses")({
     meta: [
       { title: "Courses — StudyBuddy" },
       { name: "description", content: "Add, rename and delete your StudyBuddy courses." },
+      { property: "og:title", content: "Courses — StudyBuddy" },
+      { property: "og:description", content: "Add, rename and delete your StudyBuddy courses." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });

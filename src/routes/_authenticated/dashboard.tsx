@@ -16,6 +16,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
     meta: [
       { title: "Dashboard — StudyBuddy" },
       { name: "description", content: "Your upcoming StudyBuddy deadlines." },
+      { property: "og:title", content: "Dashboard — StudyBuddy" },
+      { property: "og:description", content: "Your upcoming StudyBuddy deadlines." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });

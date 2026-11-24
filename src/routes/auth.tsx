@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { validateCredentials } from "@/lib/studybuddy";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/auth")({
   component: AuthPage,
@@ -184,7 +185,7 @@ function AuthPage() {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: `${window.location.origin}/auth`,
             // Saved on the user's auth record as user_metadata.
             data: {
               first_name: firstName.trim(),
@@ -200,11 +201,17 @@ function AuthPage() {
         if (data.session) {
           await navigate({ to: "/dashboard" });
         } else {
-          // Email confirmation is on: the user must click the link in their inbox first.
-          setNotice(
-            "Account created! Check your email and click the confirmation link, then sign in.",
-          );
-          setMode("signin");
+          // Auth deliberately returns a successful response for an existing email.
+          // Empty identities are not proof that a new account was created.
+          if (data.user?.identities?.length === 0) {
+            setNotice(
+              "If this email is already registered, sign in with your original password. Registering again does not change your password. Otherwise, check your inbox and spam folder for a confirmation email.",
+            );
+          } else {
+            setNotice(
+              "Check your inbox and spam folder for a confirmation email. Open the link to activate your account, then return here to sign in.",
+            );
+          }
           setPassword("");
           setConfirmPassword("");
         }
@@ -409,8 +416,10 @@ function AuthPage() {
                     className={`${inputClass} pr-11`}
                     placeholder="••••••••"
                   />
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setShowPassword((s) => !s)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                     className="absolute inset-y-0 right-0 mt-1 flex items-center px-3 text-muted-foreground hover:text-foreground"
@@ -420,7 +429,7 @@ function AuthPage() {
                     ) : (
                       <Eye className="h-4 w-4" aria-hidden="true" />
                     )}
-                  </button>
+                  </Button>
                 </div>
                 {!isSignIn && password && (
                   <div className="mt-2" aria-live="polite">
@@ -489,14 +498,14 @@ function AuthPage() {
                 </p>
               )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={busy}
                 className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
                 {loading ? "Please wait…" : isSignIn ? "Sign in" : "Create account"}
-              </button>
+              </Button>
             </form>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">

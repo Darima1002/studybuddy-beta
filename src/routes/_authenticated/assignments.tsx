@@ -31,6 +31,10 @@ export const Route = createFileRoute("/_authenticated/assignments")({
     meta: [
       { title: "Assignments — StudyBuddy" },
       { name: "description", content: "Add, edit and delete your StudyBuddy assignments." },
+      { property: "og:title", content: "Assignments — StudyBuddy" },
+      { property: "og:description", content: "Add, edit and delete your StudyBuddy assignments." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });
